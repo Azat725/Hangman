@@ -1,13 +1,13 @@
 # Импортируем фукцию choice, для выбора рандомного слова из списка слов
 from random import choice
 
-# Выводим приветственное сообщение 
+# Выводим приветственное сообщение
 print("Hello to Hangman!")
 print("You should guess the secret word, you have 5 guesses")
 
 # Создаем словарь с ключами - категориями слов, значение - список слов
 # Animals - ключ
-# Список со словами - значение 
+# Список со словами - значение
 word_dict = {
     "Animals": [
         "elephant", 
@@ -47,10 +47,11 @@ print(' '.join(display_word))
 
 # Иницилизируем переменную - счетчик для подсчета неверных попыток 
 guesses = 0
+max_guesses = 5
 # Инициализируем переменную для отслеживания завершения игры
 game_over = False
 
-while not game_over:
+while not game_over and guesses < max_guesses:
     # Пользователь вводит букву и преобразуем ее в нижний регистр
     guess = input("Enter a letter -> ").lower()
     
@@ -58,17 +59,24 @@ while not game_over:
     if guess not in secret_word:
         # Если буква не угадана, увеличиваем счетчик неверных попыток
         guesses += 1
-        guesses_left = 5 - guesses
-        print(f"Incorrect! Now you have {guesses_left} guesses left")
+        
+        if guesses == 1:
+            print("You hear the crowd")
+        elif guesses == 2:
+            print("You are being taken to the podium")
+        elif guesses == 3:
+            print("You're saying the last words.")
+        elif guesses == 4:
+            print("They're putting a rope around your neck")
         
         # Если количество неверных попыток достигло 5, сообщаем о поражении и показываем загаданное слово
-        if guesses == 5:
-            print(f"You Looser! The word is {secret_word}")
+        if guesses == max_guesses:
+            print(f"You were hanged! The word is {secret_word}, but it won't help you")
             game_over = True
             break
         
     # Проверяем каждую букву в секретном слове
-    for index, letter in secret_word:
+    for index, letter in enumerate(secret_word):
         # Если угаданная буква равна букве в секретном слове, обновляем отображаемое слово
         if letter == guess:
             display_word[index] = guess
@@ -80,4 +88,3 @@ while not game_over:
     if "_" not in display_word:
         print(f"You Win! The Word is {secret_word}")
         game_over = True
-        break
